@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Hello World!</title>
+		<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+	</head>
+	<body style="background: white">
+		<canvas id="snakeboard" width="400" height="400"></canvas>
+
+		<style>
+			#snakeboard {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+		</style>
+
+		<script src="dist/render.js"></script>
+	</body>
+</html>
