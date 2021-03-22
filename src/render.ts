@@ -19,11 +19,15 @@ let snake: Vector2[] = [
 	{ x: 180, y: 200 },
 	{ x: 170, y: 200 },
 	{ x: 160, y: 200 },
+	{ x: 150, y: 200 },
+	{ x: 140, y: 200 },
+	{ x: 130, y: 200 },
 ];
 
 // Get context
 const snakeboard = document.getElementById('snakeboard')! as HTMLCanvasElement;
 const ctx = snakeboard.getContext('2d')! as CanvasRenderingContext2D;
+const lostMessage = document.getElementById('lost-message') as HTMLDivElement;
 
 // Input
 document.addEventListener('keydown', (e) => {
@@ -47,9 +51,9 @@ function main(): void {
 	setTimeout(() => {
 		if (alive) {
 			clearCanvas();
-			moveSnake();
-			borderCheck();
 			selfCollisionCheck();
+			borderCheck();
+			moveSnake();
 			drawSnake();
 		}
 		main();
@@ -89,18 +93,28 @@ function moveSnake(): void {
 
 // Checks if the snake touches the border
 function borderCheck(): void {
-	const head: Vector2 = {
-		x: snake[0].x,
-		y: snake[0].y,
-	};
+	const head = snake[0];
+
+	// Numbers are weird because edges aren't the same as the size ???
+	if (
+		head.x < 20 ||
+		head.y < 20 ||
+		head.x > snakeboard.width - 30 ||
+		head.y > snakeboard.height - 30
+	) {
+		alive = false;
+	}
 }
 
 // Checks if the snake touches itself
 function selfCollisionCheck(): void {
-	const head: Vector2 = {
-		x: snake[0].x,
-		y: snake[0].y,
-	};
+	const head = snake[0];
+
+	snake.slice(1).forEach((part) => {
+		if (head.x === part.x && head.y === part.y) {
+			alive = false;
+		}
+	});
 }
 
 // Start the game

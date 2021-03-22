@@ -11,9 +11,13 @@ let snake = [
     { x: 180, y: 200 },
     { x: 170, y: 200 },
     { x: 160, y: 200 },
+    { x: 150, y: 200 },
+    { x: 140, y: 200 },
+    { x: 130, y: 200 },
 ];
 const snakeboard = document.getElementById('snakeboard');
 const ctx = snakeboard.getContext('2d');
+const lostMessage = document.getElementById('lost-message');
 document.addEventListener('keydown', (e) => {
     if (e.code === 'KeyW' || e.code === 'ArrowUp') {
         dy = -10;
@@ -36,9 +40,9 @@ function main() {
     setTimeout(() => {
         if (alive) {
             clearCanvas();
-            moveSnake();
-            borderCheck();
             selfCollisionCheck();
+            borderCheck();
+            moveSnake();
             drawSnake();
         }
         main();
@@ -68,16 +72,21 @@ function moveSnake() {
     snake.pop();
 }
 function borderCheck() {
-    const head = {
-        x: snake[0].x,
-        y: snake[0].y,
-    };
+    const head = snake[0];
+    if (head.x < 20 ||
+        head.y < 20 ||
+        head.x > snakeboard.width - 30 ||
+        head.y > snakeboard.height - 30) {
+        alive = false;
+    }
 }
 function selfCollisionCheck() {
-    const head = {
-        x: snake[0].x,
-        y: snake[0].y,
-    };
+    const head = snake[0];
+    snake.slice(1).forEach((part) => {
+        if (head.x === part.x && head.y === part.y) {
+            alive = false;
+        }
+    });
 }
 window.onload = main;
 //# sourceMappingURL=render.js.map
